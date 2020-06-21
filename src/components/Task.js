@@ -25,5 +25,42 @@ import list from '../constants/_typeList'
 
 export default () => {
   // WRITE YOUR CODE HERE
-  return null
+  const [displayList, setDisplayList] = React.useState({});
+  const [counter, setCounter] = React.useState(0);
+
+  const keyListener = (keyCode) => (event) => {
+    if(event.keyCode === keyCode){
+      setCounter((prevCounter)=>prevCounter+1)
+    }
+  }
+
+  React.useEffect(()=>{
+    // process content list to display
+    const value = list.reduce((acc ,elem)=>
+      acc[elem.type] 
+        ? {...acc, [elem.type]: acc[elem.type] + elem.count} 
+        : {...acc, [elem.type]: elem.count}
+    , {})
+    setDisplayList(value);
+
+    // add listener for f key
+    const fListener = keyListener(70);
+    document.addEventListener('keydown', fListener)
+    return ()=>{
+      document.removeEventListener('keydown', fListener)
+    }
+  }, [])
+
+
+  
+  return <div>
+    {Object.keys(displayList).map(type => (
+      <div className="content-type" key={type}>
+        <div className="content-type__name">{type.toLowerCase()}:&nbsp;</div>
+        {displayList[type]}
+      </div>
+    ))}
+    <br/>
+    <div>Special counter: {counter}</div>
+  </div>
 }

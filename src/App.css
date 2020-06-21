@@ -1,3 +1,12 @@
 .App {
   text-align: center;
 }
+
+.content-type {
+  display:flex;
+  justify-content: center;
+}
+
+.content-type__name {
+  text-transform: capitalize;
+}
